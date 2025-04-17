@@ -2,13 +2,13 @@
 namespace Src\Model;
 use Src\Core\DB;
 use Src\Core\QueryBuilder;
-class Books{
+class Book{
     protected $db;
     protected $query;
 
     public function __construct(){
-        $this->db = new database();
-        $this->query = new querybuilder($this->db->getConnection());
+        $this->db = new DB();
+        $this->query = new QueryBuilder($this->db->getConnection());
     }
     public function getAllBooks(){
         return $this->query->table('books')->get();
@@ -21,5 +21,16 @@ class Books{
     }
     public function updateBook($data,$id){
         return $this->query->table('books')->update($data,$id);
+    }
+    public function search($term) {
+        return $this->query
+                    ->table('books')
+                    ->whereLike(['title', 'author'], $term)
+                    ->get();
+    }    
+    public function returnBook($id)
+    {
+        $results=$this->query->table('books')-where('id,$id')->select();
+        return $results[0] ?? null;
     }
 }

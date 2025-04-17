@@ -18,6 +18,12 @@ class QueryBuilder{
         $this->bindings=[$value];
         return $this;
     }
+    public function whereLike(array $columns, $term) {
+        $likeClauses = array_map(fn($col) => "$col LIKE ?", $columns);
+        $this->where = "WHERE " . implode(' OR ', $likeClauses);
+        $this->bindings = array_fill(0, count($columns), "%$term%");
+        return $this;
+    }    
     public function get(){
         $sql="select * from {$this->table} {$this->where}";
         $stmt=$this->pdo->prepare($sql);
@@ -45,5 +51,15 @@ class QueryBuilder{
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([$id]);
     }
-
+    public function createTable($name = null, array $columns) {
+        $tableName = $name ?? $this->table;
+        $cols = [];
+        foreach ($columns as $col => $type) {
+            $cols[] = "$col $type";
+        }
+        $colsSql = implode(',', $cols);
+        $sql = "CREATE TABLE IF NOT EXISTS $tableName ($colsSql)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute();
+    }
 }
