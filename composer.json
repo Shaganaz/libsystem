@@ -1,0 +1,12 @@
+{
+    "name": "shag/php-libmanager",
+    "description": "A PHP library management system",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "autoload":{
+        "psr-4": {
+            "Src\\":"src/"
+        }
+    }
+}
