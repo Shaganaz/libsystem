@@ -12,7 +12,7 @@ class User {
     public function createUser($data) {
         return $this->query->table('users')->insert($data);
     }
-    public function UserEmail($email) {
+    public function getByEmail($email) {
         return $this->query->table('users')->where('email', $email)->get();
     }
     public function getByResetToken($token) {

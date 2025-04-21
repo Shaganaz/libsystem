@@ -5,7 +5,6 @@ use Src\Core\QueryBuilder;
 class Book{
     protected $db;
     protected $query;
-
     public function __construct(){
         $this->db = new DB();
         $this->query = new QueryBuilder($this->db->getConnection());
@@ -28,9 +27,15 @@ class Book{
                     ->whereLike(['title', 'author'], $term)
                     ->get();
     }    
-    public function returnBook($id)
-    {
-        $results=$this->query->table('books')-where('id,$id')->select();
+    public function returnBook($id) {
+        $results=$this->query->table('books')->where('id','$id')->get();
         return $results[0] ?? null;
     }
+    public function getBooksPaginated($limit, $offset) {
+        return $this->query->table('books')->limit($limit)->offset($offset)->get();
+    }  
+    public function countBooks() {
+        return $this->query->table('books')->count();
+    }
+    
 }

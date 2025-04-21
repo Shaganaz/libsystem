@@ -6,9 +6,11 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 $book = new BookController();
 $auth = new AuthController();
-
-if ($uri === '/books' && $method === 'GET') {
-    $book->displayBooks();
+if ($uri === '/' && $method === 'GET') {
+    header('Location: /login');
+    exit;
+} elseif ($uri === '/books' && $method === 'GET') {
+    $book->displaybooks();
 } elseif ($uri === '/books/create' && $method === 'GET') {
     $book->addBook();
 } elseif ($uri === '/books/save' && $method === 'POST') {
@@ -23,11 +25,15 @@ if ($uri === '/books' && $method === 'GET') {
     $book->removeBook($matches[1]);
 }
 
-elseif ($uri === '/login' && $method === 'GET') {
+elseif ($uri == '/register' && $method == 'GET') {
+    $auth->registerForm();
+} elseif ($uri == '/register' && $method == 'POST') {
+    $auth->register();
+} elseif ($uri === '/login' && $method === 'GET') {
     $auth->loginForm();
 } elseif ($uri === '/login' && $method === 'POST') {
     $auth->login();
-} elseif ($uri === '/logout' && $method === 'GET') {
+} elseif ($uri === '/logout' && $method === 'POST') {
     $auth->logout();
 } elseif ($uri === '/forgot' && $method === 'GET') {
     $auth->forgotPasswordForm();
@@ -37,7 +43,7 @@ elseif ($uri === '/login' && $method === 'GET') {
     $auth->resetPasswordForm();
 } elseif ($uri === '/reset' && $method === 'POST') {
     $auth->resetPassword();
-}
+} 
 else {
     echo "404 Not Found";
 }

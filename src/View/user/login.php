@@ -25,13 +25,14 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         body: data
     })
     .then(res => res.text())
-    .then(response => {
-        if (response.includes('dashboard')) {
-            window.location.href = '/dashboard';
-        } else {
-            document.getElementById('loginMsg').innerText = response;
-        }
-    });
+.then(response => {
+    if (response.trim() === 'success') {
+        window.location.href = '/book'; 
+    } else {
+        document.getElementById('loginMsg').innerText = response;
+    }
+});
+
 });
 </script>
 </body>

@@ -6,12 +6,23 @@ class BookController{
     public function __construct(){
         $this->book=new Book();
     }
-    public function displaybooks(){
-        $books=$this->book->selectAll();
-        $this->renderView('book/index',['books'=>$books]);
-    }
+    public function displaybooks() {
+        $page = $_GET['page'] ?? 1;
+        $perPage = 15;
+        $offset = ($page - 1) * $perPage;
+    
+        $books = $this->book->getBooksPaginated($perPage, $offset);
+        $totalBooks = $this->book->countBooks();
+        $totalPages = ceil($totalBooks / $perPage);
+    
+        $this->renderView('books/index', [
+            'books'=> $books,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
+        ]);
+    }    
     public function addBook(){
-        $this->renderView('book/add');
+        $this->renderView('books/add');
     }
     public function saveBook($data){
         $this->book->insertBook($data);
@@ -20,7 +31,7 @@ class BookController{
     }
     public function editBook($id){
         $book=$this->book->find($id);
-        $this->renderView('book/edit', ['book'=>$book]);
+        $this->renderView('books/edit', ['book'=>$book]);
 
     }
     public function updateBook($postData,$id){
@@ -38,8 +49,8 @@ class BookController{
         header('Content-Type: application/json');
         echo json_encode($results);
     }
-    protected function renderView($viewPath, $data = []){
+    protected function renderView($view, $data = []){
         extract($data); 
-        require_once __DIR__ . "/../Views/{$viewPath}.php";
+        require_once __DIR__ . '/../View/'  . $view. '.php';
     }
 }
