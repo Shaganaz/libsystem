@@ -8,7 +8,7 @@ class AuthController {
         session_start();
     }
     public function registerForm() {
-        $token=$_GET['token'] ?? '';
+        $token=$_POST['token'] ?? '';
         $this->renderView('user/register', ['token'=>$token]);
     } 
     public function register() {

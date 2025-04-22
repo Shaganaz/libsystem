@@ -75,7 +75,7 @@
 <div class="container">
     <h2>Library Book List</h2>
     <div class="top-bar">
-        <form method="GET" action="/books">
+        <form method="POST" action="/books">
             <input type="text" name="term" placeholder="Search books..." value="<?= htmlspecialchars($_GET['term'] ?? '') ?>">
             <button type="submit">Search</button>
         </form>

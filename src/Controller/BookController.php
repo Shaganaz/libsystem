@@ -44,7 +44,7 @@ class BookController{
         exit;
     }
     public function search(){
-        $term = $_GET['term'] ?? '';
+        $term = $_POST['term'] ?? '';
         $results = $this->book->search($term);
         header('Content-Type: application/json');
         echo json_encode($results);

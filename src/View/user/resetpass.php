@@ -5,8 +5,8 @@
 </head>
 <body>
 <h2>Reset Password</h2>
-<form id="resetForm">
-    <input type="hidden" name="token" value="<?php echo $_GET['token'] ?? ''; ?>">
+<form id="resetForm" method="POST">
+    <input type="hidden" name="token" value="<?php echo $_POST['token'] ?? ''; ?>">
     <label>New Password:</label><br>
     <input type="password" name="password" required><br><br>
     <button type="submit">Reset Password</button>
